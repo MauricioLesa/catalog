@@ -26,8 +26,18 @@
         display: none;
     }
     .navbar-collapse > ul{
-        height: calc(50vh - 44px);
+        height: calc(50vh - 55px);
     }
+    .navbar{
+        position: absolute;
+        z-index: 100;
+        width: 100vw;
+    }
+
+    main{
+        margin-top: 109px;
+    }
+
     .main-navbar{
         justify-content: space-evenly !important;
     }

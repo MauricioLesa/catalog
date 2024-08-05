@@ -19,7 +19,7 @@ const NavbarDisplay = () =>{
                 </ul>
 
                 <ul className="side-navbar navbar-nav justify-content-end  navbar-dark">
-                    <Link to="/" className="nav-item">
+                    <Link to="/login" className="nav-item">
                         <i className="bi bi-person"></i>
                         <span className="navbar-desktop-hidden ms-1 mt-5">inicio de sesion</span>
                     </Link>

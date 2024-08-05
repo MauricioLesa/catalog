@@ -1,3 +1,12 @@
-body {
+:root{
+  --large_screen:990px;
+  --font_medium:20px;
+  font-size: var(--font_medium);
+}
+
+
+#app{
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
