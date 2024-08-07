@@ -1,16 +1,15 @@
 package Catalog.backend.Config;
 
-import Catalog.backend.Services.JpaUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -19,31 +18,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JpaUserDetailsService jpaUserDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationProvider authenticationProvider;
 
 
-    @Bean
-    AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(jpaUserDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return provider;
-    }
+
+
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity htttp) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity htttp) throws Exception {
         return htttp.
-                csrf(csrf -> csrf.disable()).
-                authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/authentication/**").permitAll()
-                        .anyRequest().authenticated())
-                .headers(header -> header.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
-                .userDetailsService(jpaUserDetailsService)
+                csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auths -> auths
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/").authenticated()
+                        .anyRequest())
+                .logout(LogoutConfigurer::permitAll)
+                .authenticationProvider(authenticationProvider)
+                .userDetailsService(userDetailsService)
                 .build();
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
+
 }
