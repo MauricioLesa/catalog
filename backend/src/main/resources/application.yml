@@ -1,6 +1,14 @@
 spring:
   datasource:
-    url:
-    username:
-    password:
+    url: jdbc:postgresql://localhost:5432/catalog
+    username: mau
+    password: mau
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+      database: postgresql
+      database-plataform: org.hibernate.dialect.PostgreSQLDialect
