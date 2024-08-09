@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -52,26 +51,22 @@ public class AuthService {
 
     public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody){
 
+        if(repository.findByEmail(requestBody.getEmail()).isEmpty()) return AuthenticationResponse.builder().msg("no existe el usuario").build();
+
+        HttpSession session = request.getSession(true);
+        if(!session.getId().isEmpty()) return AuthenticationResponse.builder().msg(session.toString()).build();
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestBody.getEmail(), requestBody.getPassword()));
+
+        if(!authentication.isAuthenticated()) return AuthenticationResponse.builder().msg("error de autenticacion").build();
+
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
-        HttpSession session = request.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
-        return AuthenticationResponse.builder().msg("Success").build();
+        return AuthenticationResponse.builder().msg("success").build();
     }
 
-    public AuthenticationResponse test (){
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAuthenticated = authentication.isAuthenticated();
-        if (isAuthenticated) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            return AuthenticationResponse.builder().msg(auth.toString()).build();
-        }
-
-        return AuthenticationResponse.builder().msg("error").build();
-    }
 }

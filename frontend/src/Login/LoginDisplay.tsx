@@ -1,8 +1,10 @@
 import './Login.css'
 
+interface props {
+    onClickLogin: (e:React.MouseEvent) => void;
+}
 
-
-const LoginDisplay = () =>{
+const LoginDisplay = (props:props) => {
 
     return(
         <div className="flex-grow-1 d-flex text-center">
@@ -16,7 +18,7 @@ const LoginDisplay = () =>{
                     <span  className="input-group-text" >Contraseña</span >
                     <input className='form-control' type="password"/>
                 </div>
-                <button className="btn btn-secondary border" type="submit">Iniciar session</button>
+                <button className="btn btn-secondary border" onClick={props.onClickLogin} type="submit">Iniciar session</button>
                 <p className='mt-2'>o</p>
                 <button className="btn btn-dark" >Registrarse</button>
             </form>
