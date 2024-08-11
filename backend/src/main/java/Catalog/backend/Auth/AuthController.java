@@ -37,13 +37,11 @@ public class AuthController {
         return ResponseEntity.ok(service.login(request, requestBody));
     }
 
-
-
-    @PostMapping("/test")
-    public String text(
+    @GetMapping("/sessionData")
+    public ResponseEntity<SessionDataResponse> isLogged(
     )
     {
-        return "*";
+        return ResponseEntity.ok(service.isLogged());
     }
 
 

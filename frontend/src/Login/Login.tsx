@@ -1,39 +1,46 @@
 import LoginDisplay from "./LoginDisplay"
+import {loginAPI} from "../APIs/AuthAPI"
+import {useContext, useState} from "react"
+import { useNavigate } from "react-router-dom";
+import { userContext } from "../MainPage/MainPage";
+import { UserDataSet } from "../MainPage/useSessionData";
 
-
-const onClickLogin = async (e:React.MouseEvent) => {
-
-    e.preventDefault();
-
-
-    const response = await fetch('http://localhost:8080/auth/login', {
-        method: "POST",
-        mode: 'cors',
-        credentials:"include",
-        body: JSON.stringify({
-            email:"asd@asd",
-            password:"asdsa"
-        }),
-        headers: {
-            'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Credentials':'*',
-            "Access-Control-Allow-Origin":'*',
-            'SameSite': 'None',
-        }
-      });
-
-     
-    const json = await response.json();
-    console.log(json);
-    
-}
 
 
 const Login = () =>{
 
+    const [password, setPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [msg, setMsg] = useState<string>("");
+    const navigate = useNavigate();
+    const currentUser = useContext<UserDataSet|null>(userContext);
+    const setUser = currentUser? currentUser.setUser:(()=>{});
+
+
+    const onClickLogin = async (e:React.MouseEvent) => {
+
+        e.preventDefault();
+
+
+        let status = await loginAPI(email, password);
+        switch(status) {
+            default:
+                break;
+            case 401:
+                setMsg("usuario o contraseña equivocada");
+                break;
+            case 403:
+                setMsg("usuario o contraseña equivocada");
+                break;
+            case 200:
+                setUser();
+                navigate("/");
+                break;
+        }
+    }
+
     return(
-        <LoginDisplay onClickLogin={onClickLogin}/>
+        <LoginDisplay msg={msg}  setPassword={setPassword} setEmail={setEmail}  onClickLogin={onClickLogin}/>
     )
 }
 

@@ -8,10 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -31,9 +34,20 @@ public class AuthService {
 
 
     public AuthenticationResponse register (HttpServletRequest request, RegisterRequest requestBody){
-        var user = User.builder().firstName(requestBody.getFirstName()).lastName(requestBody.getLastName())
-                .email(requestBody.getEmail()).password(passwordEncoder.encode(requestBody.getPassword())).role(Role.CUSTOMER).build();
+
+        if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
+            return AuthenticationResponse.builder().msg("ya existe el usuario").build();
+
+        var user = User.builder()
+                .firstName(requestBody.getFirstName())
+                .lastName(requestBody.getLastName())
+                .email(requestBody.getEmail())
+                .password(passwordEncoder.encode(requestBody.getPassword()))
+                .role(Role.CUSTOMER)
+                .build();
+
         repository.save(user);
+
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -45,28 +59,39 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String res = authentication.toString();
 
-        return AuthenticationResponse.builder().msg(res).build();
+        return AuthenticationResponse.builder().msg("usuario guardado").build();
     }
 
 
-    public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody){
-
-        if(repository.findByEmail(requestBody.getEmail()).isEmpty()) return AuthenticationResponse.builder().msg("no existe el usuario").build();
+    public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody) throws BadCredentialsException {
 
         HttpSession session = request.getSession(true);
-        if(!session.getId().isEmpty()) return AuthenticationResponse.builder().msg(session.toString()).build();
-
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestBody.getEmail(), requestBody.getPassword()));
-
-        if(!authentication.isAuthenticated()) return AuthenticationResponse.builder().msg("error de autenticacion").build();
-
-
         SecurityContext securityContext = SecurityContextHolder.getContext();
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(requestBody.getEmail(), requestBody.getPassword());
+
+        Authentication authentication = authenticationManager.authenticate(token);
+
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
         return AuthenticationResponse.builder().msg("success").build();
     }
 
+    public SessionDataResponse isLogged(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails)
+            return SessionDataResponse
+                    .builder()
+                    .role(((UserDetails) principal).getAuthorities().toArray())
+                    .email(((UserDetails) principal).getUsername())
+                    .build();
+        else
+            return SessionDataResponse
+                .builder()
+                .role(new Object[0])
+                .email("")
+                .build();
+    }
 
 }
