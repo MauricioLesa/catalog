@@ -1,6 +1,8 @@
 package Catalog.backend.Auth;
 
 
+import Catalog.backend.Store.Store;
+import Catalog.backend.Store.StoreRepository;
 import Catalog.backend.User.Role;
 import Catalog.backend.User.User;
 import Catalog.backend.User.UserRepository;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository repository;
+
+    private final StoreRepository storeRepository;
 
     private final AuthenticationManager authenticationManager;
 
@@ -94,4 +98,50 @@ public class AuthService {
                 .build();
     }
 
+    public AuthenticationResponse registerStore(HttpServletRequest request, RegisterStoreRequest requestBody) {
+
+        if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
+            return AuthenticationResponse.builder().msg("ya existe el usuario").build();
+
+        if(!storeRepository.findByName(requestBody.getStoreName()).isEmpty())
+            return AuthenticationResponse.builder().msg("ya existe una tienda con ese nombre").build();
+
+
+
+        var user = User.builder()
+                .firstName(requestBody.getFirstName())
+                .lastName(requestBody.getLastName())
+                .email(requestBody.getEmail())
+                .password(passwordEncoder.encode(requestBody.getPassword()))
+                .role(Role.VENDOR)
+                .build();
+
+
+        repository.save(user);
+
+        User userId = repository.findByEmail(requestBody.getEmail()).map(userRep -> userRep).orElse(null);
+
+        var store = Store.builder()
+                .name(requestBody.getStoreName())
+                .description(requestBody.getStoreDescription())
+                .direction(requestBody.getStoreDirection())
+                .user(userId)
+                .build();
+
+        storeRepository.save(store);
+
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        requestBody.getEmail(),
+                        requestBody.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String res = authentication.toString();
+
+        return AuthenticationResponse.builder().msg("usuario guardado").build();
+
+    }
 }

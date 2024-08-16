@@ -16,15 +16,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "reviews")
 public class Review {
 
-    @Id
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user_id;
-
-    @Id
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product_id;
+    @EmbeddedId
+    private ReviewPrimaryKey reviewPrimaryKey;
 
     private String comment;
 

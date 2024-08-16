@@ -16,14 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "carts")
 public class Cart {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user_id;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product_id;
+    @EmbeddedId
+    private CartPrimaryKey cart_id;
 
 }

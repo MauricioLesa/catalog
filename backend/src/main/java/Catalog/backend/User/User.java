@@ -1,6 +1,7 @@
 package Catalog.backend.User;
 
 
+import Catalog.backend.Store.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,9 @@ public class User implements UserDetails {
     private String email;
 
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    private Store store;
 
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -27,6 +27,15 @@ public class AuthController {
         return ResponseEntity.ok(service.register(request, requestBody));
     }
 
+    @PostMapping("/register-store")
+    public ResponseEntity<AuthenticationResponse> registerStore(
+            HttpServletRequest request,
+            @RequestBody RegisterStoreRequest requestBody
+    )
+    {
+        return ResponseEntity.ok(service.registerStore(request, requestBody));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> register(
             HttpServletRequest request,
