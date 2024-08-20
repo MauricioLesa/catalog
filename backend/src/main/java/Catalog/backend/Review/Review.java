@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "reviews")
+@Entity(name = "reviews")
 public class Review {
 
     @EmbeddedId

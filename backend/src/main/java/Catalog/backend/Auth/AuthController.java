@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.processing.SupportedOptions;
+import javax.naming.NameAlreadyBoundException;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,8 +23,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             HttpServletRequest request,
             @RequestBody RegisterRequest requestBody
-    )
-    {
+    ){
         return ResponseEntity.ok(service.register(request, requestBody));
     }
 
@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<AuthenticationResponse> login(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestBody LoginRequest requestBody

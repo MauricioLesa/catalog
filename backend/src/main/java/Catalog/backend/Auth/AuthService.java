@@ -10,16 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,13 +30,10 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
-
     public AuthenticationResponse register (HttpServletRequest request, RegisterRequest requestBody){
 
         if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
-            return AuthenticationResponse.builder().msg("ya existe el usuario").build();
+            return AuthenticationResponse.builder().msg("email_used").build();
 
         var user = User.builder()
                 .firstName(requestBody.getFirstName())
@@ -49,35 +42,26 @@ public class AuthService {
                 .password(passwordEncoder.encode(requestBody.getPassword()))
                 .role(Role.CUSTOMER)
                 .build();
-
         repository.save(user);
 
+        authenticate(request, requestBody.getEmail(), requestBody.getPassword());
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        requestBody.getEmail(),
-                        requestBody.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String res = authentication.toString();
-
-        return AuthenticationResponse.builder().msg("usuario guardado").build();
+        return AuthenticationResponse.builder().msg("success").build();
     }
 
 
-    public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody) throws BadCredentialsException {
+    public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody) {
 
-        HttpSession session = request.getSession(true);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
+        var user = repository.findByEmail(requestBody.getEmail());
+        if(user.isEmpty())
+            return AuthenticationResponse.builder().msg("user_password_not_found").build();
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(requestBody.getEmail(), requestBody.getPassword());
+        String pass = user.map(User::getPassword).orElse("");
 
-        Authentication authentication = authenticationManager.authenticate(token);
+        if(!passwordEncoder.matches(requestBody.getPassword(),pass))
+            return AuthenticationResponse.builder().msg("user_password_not_found").build();
 
-        securityContext.setAuthentication(authentication);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        authenticate(request, requestBody.getEmail(), requestBody.getPassword());
 
         return AuthenticationResponse.builder().msg("success").build();
     }
@@ -101,12 +85,10 @@ public class AuthService {
     public AuthenticationResponse registerStore(HttpServletRequest request, RegisterStoreRequest requestBody) {
 
         if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
-            return AuthenticationResponse.builder().msg("ya existe el usuario").build();
+            return AuthenticationResponse.builder().msg("email_used").build();
 
         if(!storeRepository.findByName(requestBody.getStoreName()).isEmpty())
-            return AuthenticationResponse.builder().msg("ya existe una tienda con ese nombre").build();
-
-
+            return AuthenticationResponse.builder().msg("name_used").build();
 
         var user = User.builder()
                 .firstName(requestBody.getFirstName())
@@ -115,8 +97,6 @@ public class AuthService {
                 .password(passwordEncoder.encode(requestBody.getPassword()))
                 .role(Role.VENDOR)
                 .build();
-
-
         repository.save(user);
 
         User userId = repository.findByEmail(requestBody.getEmail()).map(userRep -> userRep).orElse(null);
@@ -127,21 +107,24 @@ public class AuthService {
                 .direction(requestBody.getStoreDirection())
                 .user(userId)
                 .build();
-
         storeRepository.save(store);
 
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        requestBody.getEmail(),
-                        requestBody.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String res = authentication.toString();
+        authenticate(request, requestBody.getEmail(),requestBody.getPassword());
 
         return AuthenticationResponse.builder().msg("usuario guardado").build();
 
     }
+
+    private void authenticate(HttpServletRequest request, String email, String password){
+        HttpSession session = request.getSession(true);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication = authenticationManager.authenticate(token);
+        securityContext.setAuthentication(authentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+    }
+
+
 }
+
+

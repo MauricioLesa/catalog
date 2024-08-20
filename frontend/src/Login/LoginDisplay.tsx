@@ -2,6 +2,8 @@ import './Login.css'
 
 interface props {
     onClickLogin: (e:React.MouseEvent) => void;
+    onClickRegister: (e:React.MouseEvent) => void;
+    onClickRegisterStore: (e:React.MouseEvent) => void;
     setEmail: React.Dispatch<React.SetStateAction<string>>,
     setPassword: React.Dispatch<React.SetStateAction<string>>,
     msg:String;
@@ -24,7 +26,9 @@ const LoginDisplay = (props:props) => {
                 <p className='login-msg'>{props.msg}</p>
                 <button className="btn btn-secondary border" onClick={props.onClickLogin} type="submit">Iniciar session</button>
                 <p className='mt-2'>o</p>
-                <button className="btn btn-dark" >Registrarse</button>
+                <button className="btn btn-dark" onClick={props.onClickRegister}>Registrarse</button>
+                <span className="mx-4">/</span>
+                <button className="btn btn-dark" onClick={props.onClickRegisterStore}>Registrar tienda</button>
             </form>
         </div>
     )

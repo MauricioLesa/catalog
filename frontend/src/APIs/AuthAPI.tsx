@@ -38,7 +38,8 @@ export const loginAPI = async (email:String, password:String) => {
                 'SameSite': 'None',
             }
         });
-        return response.status;
+        const content =  await response.json();
+        return content;
     }
     catch (error){
         console.log(error);

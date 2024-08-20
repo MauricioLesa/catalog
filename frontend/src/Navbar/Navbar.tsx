@@ -3,6 +3,7 @@ import NavbarDisplay from "./NavbarDisplay"
 import NavbarDisplayCustomer from "./NavbarDisplayCustomer"
 import { userContext } from "../MainPage/MainPage";
 import { UserDataSet } from "../MainPage/useSessionData";
+import NavbarDisplayVendor from "./NavbarDisplayVendor";
 
 
 
@@ -14,6 +15,11 @@ const Navbar  = () => {
         case "CUSTOMER":
             return( 
                 <NavbarDisplayCustomer/>
+            );
+
+        case "VENDOR":
+            return( 
+                <NavbarDisplayVendor/>
             );
 
         default:

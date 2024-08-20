@@ -1,0 +1,33 @@
+
+@media screen and (max-width:990px){
+    .product-list-table{
+        width: 90%;
+        justify-self: center;
+    }
+
+    .product-list-row{
+        display: flex;
+        justify-content: space-between;
+        
+        margin: 20px 0 5px;
+        padding: 0 20px;
+        border-bottom: 1px solid black;
+    }
+}
+
+
+@media screen and (min-width:990px){
+    .product-list-table{
+        width: 80%;
+    }
+    
+    .product-list-row{
+        display: flex;
+        justify-content: space-between;
+        
+        margin: 20px 0 5px;
+        padding: 0 100px;
+        border-bottom: 1px solid black;
+
+    }
+}

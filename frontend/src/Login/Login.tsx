@@ -1,6 +1,6 @@
 import LoginDisplay from "./LoginDisplay"
 import {loginAPI} from "../APIs/AuthAPI"
-import {useContext, useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../MainPage/MainPage";
 import { UserDataSet } from "../MainPage/useSessionData";
@@ -16,31 +16,49 @@ const Login = () =>{
     const currentUser = useContext<UserDataSet|null>(userContext);
     const setUser = currentUser? currentUser.setUser:(()=>{});
 
+    
+
+    useEffect(() =>{
+        if(currentUser?.data.email != ""){
+            navigate("/");
+        }
+    },[currentUser])
 
     const onClickLogin = async (e:React.MouseEvent) => {
-
         e.preventDefault();
-
-
         let status = await loginAPI(email, password);
-        switch(status) {
+        switch(status.msg) {
             default:
                 break;
-            case 401:
+            case "user_password_not_found":
                 setMsg("usuario o contraseña equivocada");
                 break;
-            case 403:
-                setMsg("usuario o contraseña equivocada");
-                break;
-            case 200:
+            case "success":
                 setUser();
                 navigate("/");
                 break;
         }
     }
 
+    const onClickRegister = (e:React.MouseEvent) => {
+        e.preventDefault();
+        navigate("/register");
+    }
+
+    const onClickRegisterStore = (e:React.MouseEvent) => {
+        e.preventDefault();
+        navigate("/register-store");
+    }
+
     return(
-        <LoginDisplay msg={msg}  setPassword={setPassword} setEmail={setEmail}  onClickLogin={onClickLogin}/>
+        <LoginDisplay 
+            msg={msg}  
+            setPassword={setPassword} 
+            setEmail={setEmail}  
+            onClickLogin={onClickLogin} 
+            onClickRegister={onClickRegister}
+            onClickRegisterStore={onClickRegisterStore}
+        />
     )
 }
 

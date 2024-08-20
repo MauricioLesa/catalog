@@ -2,6 +2,9 @@ import Login from '../Login/Login';
 import ErrorScreen from '../Errors/ErrorScreen';
 import {Routes, Route} from "react-router-dom";
 import './MainRoutes.css'
+import Register from '../Register/Register';
+import RegisterStore from '../Register/RegisterStore';
+import StoreProducts from '../StoreProducts/StoreProducts';
 
 const MainRoutes = () =>{
     return (
@@ -10,14 +13,18 @@ const MainRoutes = () =>{
                 <Route 
                     path="/login" 
                     element={<Login/>}  
-                    errorElement={<ErrorScreen message={'Error al cargar la pagina'} />} 
-                    loader={async () => {
-                        const res = await fetch(`http://localhost:5173/favicon.ico`);
-                        if (res.status === 404) {
-                            throw new Error("Could not fetch project");
-                        }
-                        return { res };
-                    } }
+                />
+                <Route 
+                    path="/register" 
+                    element={<Register/>}  
+                />
+                <Route 
+                    path="/register-store" 
+                    element={<RegisterStore/>}  
+                />
+                <Route 
+                    path="/store-products" 
+                    element={<StoreProducts/>}  
                 />
             </Routes>
         </main>

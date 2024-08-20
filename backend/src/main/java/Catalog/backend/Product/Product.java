@@ -1,6 +1,8 @@
 package Catalog.backend.Product;
 
+import Catalog.backend.Offer.Offer;
 import Catalog.backend.Store.Store;
+import Catalog.backend.Tag.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,5 +43,8 @@ public class Product {
             inverseJoinColumns=
             @JoinColumn(name="tag_id", referencedColumnName="id")
     )
-    private Collection<Product> product;
+    private Collection<Tag> tag;
+
+    @OneToMany(mappedBy = "product")
+    private Collection<Offer> offer;
 }
