@@ -8,9 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -26,13 +29,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity htttp) throws Exception {
+        SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
         return htttp
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/").authenticated()
-                        .anyRequest())
+                        .requestMatchers("/product/**").permitAll()
+                        .anyRequest().authenticated())
+                .securityContext((context) -> context.securityContextRepository(securityContextRepository))
+
+                //session management
+                .sessionManagement(session -> {
+                            session.maximumSessions(1).maxSessionsPreventsLogin(true);
+                            session.sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::newSession);
+                            session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                        }
+                )
                 .logout(LogoutConfigurer::permitAll)
                 .authenticationProvider(authenticationProvider)
                 .userDetailsService(userDetailsService)

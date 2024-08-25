@@ -22,18 +22,20 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             HttpServletRequest request,
+            HttpServletResponse response,
             @RequestBody RegisterRequest requestBody
     ){
-        return ResponseEntity.ok(service.register(request, requestBody));
+        return ResponseEntity.ok(service.register(request,response, requestBody));
     }
 
     @PostMapping("/register-store")
     public ResponseEntity<AuthenticationResponse> registerStore(
             HttpServletRequest request,
+            HttpServletResponse response,
             @RequestBody RegisterStoreRequest requestBody
     )
     {
-        return ResponseEntity.ok(service.registerStore(request, requestBody));
+        return ResponseEntity.ok(service.registerStore(request,response, requestBody));
     }
 
     @PostMapping("/login")
@@ -43,7 +45,7 @@ public class AuthController {
             @RequestBody LoginRequest requestBody
     )
     {
-        return ResponseEntity.ok(service.login(request, requestBody));
+        return ResponseEntity.ok(service.login(request,response, requestBody));
     }
 
     @GetMapping("/sessionData")

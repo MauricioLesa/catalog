@@ -7,6 +7,7 @@ import Catalog.backend.User.Role;
 import Catalog.backend.User.User;
 import Catalog.backend.User.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,8 +15,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +34,11 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationResponse register (HttpServletRequest request, RegisterRequest requestBody){
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+    public AuthenticationResponse register (HttpServletRequest request, HttpServletResponse response, RegisterRequest requestBody){
 
         if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
             return AuthenticationResponse.builder().msg("email_used").build();
@@ -44,13 +52,13 @@ public class AuthService {
                 .build();
         repository.save(user);
 
-        authenticate(request, requestBody.getEmail(), requestBody.getPassword());
+        authenticate(request,response, requestBody.getEmail(), requestBody.getPassword());
 
         return AuthenticationResponse.builder().msg("success").build();
     }
 
 
-    public AuthenticationResponse login (HttpServletRequest request, LoginRequest requestBody) {
+    public AuthenticationResponse login (HttpServletRequest request, HttpServletResponse response, LoginRequest requestBody) {
 
         var user = repository.findByEmail(requestBody.getEmail());
         if(user.isEmpty())
@@ -61,7 +69,7 @@ public class AuthService {
         if(!passwordEncoder.matches(requestBody.getPassword(),pass))
             return AuthenticationResponse.builder().msg("user_password_not_found").build();
 
-        authenticate(request, requestBody.getEmail(), requestBody.getPassword());
+        authenticate(request,response, requestBody.getEmail(), requestBody.getPassword());
 
         return AuthenticationResponse.builder().msg("success").build();
     }
@@ -82,7 +90,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthenticationResponse registerStore(HttpServletRequest request, RegisterStoreRequest requestBody) {
+    public AuthenticationResponse registerStore(HttpServletRequest request, HttpServletResponse response, RegisterStoreRequest requestBody) {
 
         if(!repository.findByEmail(requestBody.getEmail()).isEmpty())
             return AuthenticationResponse.builder().msg("email_used").build();
@@ -109,22 +117,20 @@ public class AuthService {
                 .build();
         storeRepository.save(store);
 
-        authenticate(request, requestBody.getEmail(),requestBody.getPassword());
+        authenticate(request,response, requestBody.getEmail(),requestBody.getPassword());
 
         return AuthenticationResponse.builder().msg("usuario guardado").build();
 
     }
 
-    private void authenticate(HttpServletRequest request, String email, String password){
-        HttpSession session = request.getSession(true);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
+    private void authenticate(HttpServletRequest request,HttpServletResponse response, String email, String password){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, password);
         Authentication authentication = authenticationManager.authenticate(token);
-        securityContext.setAuthentication(authentication);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+        context.setAuthentication(authentication);
+        securityContextHolderStrategy.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
     }
-
-
 }
 
 

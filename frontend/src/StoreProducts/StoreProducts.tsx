@@ -2,7 +2,7 @@ import StoreProductsDisplay from "./StoreProductsDisplay";
 
 const data = [
     {
-        name:"eval1",
+        name:"eval1 eval1 eval1 eval1 eval1",
         price:0.0,
         description:"desc1"
     },
@@ -20,8 +20,12 @@ const data = [
 
 
 const StoreProducts = () => {
+
+
+
     return(
-        <StoreProductsDisplay productList = {data}/>
+      <StoreProductsDisplay  productList = {data}/>
+        
     )
 }
 

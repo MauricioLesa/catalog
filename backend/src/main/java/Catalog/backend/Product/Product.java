@@ -3,6 +3,7 @@ package Catalog.backend.Product;
 import Catalog.backend.Offer.Offer;
 import Catalog.backend.Store.Store;
 import Catalog.backend.Tag.Tag;
+import Catalog.backend.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +48,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private Collection<Offer> offer;
+
 }
