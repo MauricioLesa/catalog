@@ -14,7 +14,7 @@ import javax.naming.NameAlreadyBoundException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final AuthService service;

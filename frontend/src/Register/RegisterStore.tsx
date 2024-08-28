@@ -1,7 +1,7 @@
 import { SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterStoreDisplay from "./RegisterStoreDisplay";
-import { registerStoreAPI } from "../APIs/Store.API";
+import { registerStoreAPI } from "../APIs/StoreAPI";
 
 const RegisterStore = () => {
 
@@ -35,13 +35,12 @@ const RegisterStore = () => {
             case "name_used":
                 setMsg("nombre de tienda ya usado");
                 break;
+            case "store_saved":
+                navigate("/");
+                break;
             default:
-                setMsg("emrpesa guardada");
                 break;
         }
-
-        
-        //navigate("/");
 
     }
 

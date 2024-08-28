@@ -119,7 +119,7 @@ public class AuthService {
 
         authenticate(request,response, requestBody.getEmail(),requestBody.getPassword());
 
-        return AuthenticationResponse.builder().msg("usuario guardado").build();
+        return AuthenticationResponse.builder().msg("store_saved").build();
 
     }
 

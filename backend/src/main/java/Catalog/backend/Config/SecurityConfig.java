@@ -31,21 +31,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity htttp) throws Exception {
         SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
         return htttp
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/product/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/product/**").authenticated()
+                        .requestMatchers("/image/**").authenticated()
+                        )
+                .csrf(AbstractHttpConfigurer::disable)
                 .securityContext((context) -> context.securityContextRepository(securityContextRepository))
-
-                //session management
                 .sessionManagement(session -> {
                             session.maximumSessions(1).maxSessionsPreventsLogin(true);
                             session.sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::newSession);
                             session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
                         }
                 )
-                .logout(LogoutConfigurer::permitAll)
                 .authenticationProvider(authenticationProvider)
                 .userDetailsService(userDetailsService)
                 .build();

@@ -1,3 +1,5 @@
+import { HEADERS } from "./Config";
+
 interface registerStoreData {
     email:string,
     firstName:string,
@@ -16,12 +18,7 @@ export const registerStoreAPI = async (data:registerStoreData) => {
             mode: 'cors',
             credentials:"include",
             body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Credentials':'*',
-                "Access-Control-Allow-Origin":'*',
-                'SameSite': 'None',
-            }
+            headers: HEADERS
         });
         const content =  await response.json();
         return content;
