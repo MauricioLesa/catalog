@@ -21,4 +21,10 @@ public class ProductVendorController {
     ){
         return ResponseEntity.ok(service.saveNewProduct(requestBody));
     }
+
+    @GetMapping("/product-store-list")
+    public ResponseEntity<ProcutListResponse> productStoreList(
+    ){
+        return ResponseEntity.ok(service.productList());
+    }
 }

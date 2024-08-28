@@ -14,12 +14,12 @@ const NavbarDisplay = () =>{
 
             <div className="collapse  navbar-collapse navbar-dark" id="navbarSupportedContent">
                 <ul className="main-navbar navbar-nav flex-grow-1 justify-content-center">
-                    <Link to="/" className="nav-item">Productos</Link>
-                    <Link to="/" className="nav-item">Ofertas</Link>
+                    <Link  to="/" className="nav-item">Productos</Link>
+                    <Link  to="/" className="nav-item">Ofertas</Link>
                 </ul>
 
                 <ul className="side-navbar navbar-nav justify-content-end  navbar-dark">
-                    <Link to="/login" className="nav-item">
+                    <Link to="/login"  className="nav-item">
                         <i className="bi bi-person"></i>
                         <span className="navbar-desktop-hidden ms-1 mt-5">inicio de sesion</span>
                     </Link>

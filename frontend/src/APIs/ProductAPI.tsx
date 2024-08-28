@@ -1,4 +1,4 @@
-import { HEADERS, IMAGEHEADERS } from "./Config";
+import { HEADERS,GETHEADERS, IMAGEHEADERS } from "./Config";
 
 export interface NewProduct {
     image: string
@@ -34,6 +34,26 @@ export const saveNewProduct = async (newProduct: NewProduct, image:FormData) => 
 
         const content =  await response.json();
         console.log(content);
+    }
+    catch (err) {
+        console.log(err, "error loading the product");
+    }
+}
+
+export const productStoreListAPI = async () => {
+
+    try {
+        const response:Response = await fetch('http://localhost:8080/product/product-store-list?'
+            ,{
+                method: "GET",
+                mode: 'cors',
+                credentials: 'include',
+                headers: GETHEADERS,
+            });
+
+        const content =  await response.json();
+        console.log(content.products);
+        return(content.products);
     }
     catch (err) {
         console.log(err, "error loading the product");

@@ -15,11 +15,11 @@ const NavbarDisplayVendor = () => {
 
             <div className="collapse  navbar-collapse navbar-dark" id="navbarSupportedContent">
                 <ul className="main-navbar navbar-nav flex-grow-1 justify-content-center">
-                    <Link to="/store-products" className="nav-item">Productos</Link>
+                    <Link  to="/store-products" className="nav-item">Productos</Link>
                 </ul>
 
                 <ul className="side-navbar navbar-nav justify-content-end  navbar-dark">
-                    <Link to="/store-profile" className="nav-item">
+                    <Link  to="/store-profile" className="nav-item">
                         <i className="bi bi-shop"></i>
                         <span className="navbar-desktop-hidden ms-1 mt-5">perfil</span>
                     </Link>
