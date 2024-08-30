@@ -16,10 +16,17 @@ public class ProductVendorController {
     private final ProductService service;
 
     @PostMapping("/save")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<ConfirmationResponse> register(
             @RequestBody SaveProductRequest requestBody
     ){
         return ResponseEntity.ok(service.saveNewProduct(requestBody));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ConfirmationResponse> update(
+            @RequestBody SaveProductRequest requestBody
+    ){
+        return ResponseEntity.ok(ConfirmationResponse.builder().msg("producto actualizado").build());
     }
 
     @GetMapping("/product-store-list")

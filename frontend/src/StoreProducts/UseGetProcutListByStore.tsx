@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { productStoreListAPI } from "../APIs/ProductAPI";
+import { Product, productStoreListAPI } from "../APIs/ProductAPI";
 
 
 
-export const useGetProductListByStore = ():[] =>{
+export const useGetProductListByStore = ():Product[] =>{
 
-    const [list, setList] = useState<[]>([]);
+    const [list, setList] = useState<Product[]>([]);
     
     const loadList = async () => {
         const res = await productStoreListAPI();

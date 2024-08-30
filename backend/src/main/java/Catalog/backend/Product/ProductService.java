@@ -21,7 +21,7 @@ public class ProductService {
     private final ProductRepository repository;
     private final UserRepository userRepository;
 
-    public AuthenticationResponse saveNewProduct (SaveProductRequest requestBody){
+    public ConfirmationResponse saveNewProduct (SaveProductRequest requestBody){
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = ((UserDetails) principal).getUsername();
@@ -38,7 +38,7 @@ public class ProductService {
         repository.save(product);
 
 
-        return AuthenticationResponse.builder().msg("success").build();
+        return ConfirmationResponse.builder().msg("success").build();
     }
 
     public ProcutListResponse productList() {

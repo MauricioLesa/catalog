@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NewProduct, saveNewProduct } from "../APIs/ProductAPI";
+import { editProductAPI, Product, saveNewProduct } from "../APIs/ProductAPI";
 import StoreProductsDisplay from "./StoreProductsDisplay";
 import { useGetProductListByStore } from "./UseGetProcutListByStore";
 
@@ -8,7 +8,7 @@ const StoreProducts = () => {
 
     const data = useGetProductListByStore();
     const [image, setImage] = useState<FormData>(new FormData());
-    const [product, setProduct] = useState<NewProduct>(
+    const [product, setProduct] = useState<Product>(
         {image: "",
         name: "",
         price: 0.0,
@@ -26,14 +26,36 @@ const StoreProducts = () => {
     }
 
     const newProduct = async () => {
-        await saveNewProduct(
+        let response = await saveNewProduct(
             product,
             image
         )
+        if (response.status === 200)
+        setProduct({image: "",
+            name: "",
+            price: 0.0,
+            description: ""
+            })
+    }
+
+    const editProduct = async (id:number) => {
+        console.log(product);
+        console.log(data[id]);
+        let response = await editProductAPI(
+            product,
+            null
+        )
+
+        /*if (response.status === 200)
+            setProduct({image: "",
+                name: "",
+                price: 0.0,
+                description: ""
+                })*/
     }
 
     return(
-      <StoreProductsDisplay product={product} setProduct={setProduct} uploadImage={uploadImage} newProduct={newProduct}   productList = {data}/>
+      <StoreProductsDisplay product={product} editProduct={editProduct} setProduct={setProduct} uploadImage={uploadImage} newProduct={newProduct}   productList = {data}/>
         
     )
 }

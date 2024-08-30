@@ -1,6 +1,6 @@
 import { HEADERS,GETHEADERS, IMAGEHEADERS } from "./Config";
 
-export interface NewProduct {
+export interface Product {
     image: string
     name: string,
     price: number,
@@ -8,7 +8,7 @@ export interface NewProduct {
 }
 
 
-export const saveNewProduct = async (newProduct: NewProduct, image:FormData) => {
+export const saveNewProduct = async (newProduct: Product, image:FormData) => {
 
     try {
         const imgPath:Response = await fetch('http://localhost:8080/image/save'
@@ -33,7 +33,7 @@ export const saveNewProduct = async (newProduct: NewProduct, image:FormData) => 
             });
 
         const content =  await response.json();
-        console.log(content);
+        return content;
     }
     catch (err) {
         console.log(err, "error loading the product");
@@ -52,8 +52,41 @@ export const productStoreListAPI = async () => {
             });
 
         const content =  await response.json();
-        console.log(content.products);
         return(content.products);
+    }
+    catch (err) {
+        console.log(err, "error loading the product");
+    }
+}
+
+export const editProductAPI = async (product: Product, image:FormData|null) => {
+
+    try {
+        if(image != null) {
+        const imgPath:Response = await fetch('http://localhost:8080/image/save'
+            ,{
+                method: "POST",
+                mode: 'cors',
+                credentials: 'include',
+                headers: IMAGEHEADERS,
+                body:image
+            });
+
+        const res =  await imgPath.json();
+        product.image = res.img_path;
+        }
+        
+        const response:Response = await fetch('http://localhost:8080/product/update'
+            ,{
+                method: "PUT",
+                mode: 'cors',
+                credentials: 'include',
+                headers: HEADERS,
+                body:JSON.stringify(product)
+            });
+
+        const content =  await response.json();
+        return content;
     }
     catch (err) {
         console.log(err, "error loading the product");
