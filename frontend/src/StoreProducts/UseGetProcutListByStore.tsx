@@ -3,7 +3,7 @@ import { Product, productStoreListAPI } from "../APIs/ProductAPI";
 
 
 
-export const useGetProductListByStore = ():Product[] =>{
+export const useGetProductListByStore = (): [Product[],() => Promise<void>]  =>{
 
     const [list, setList] = useState<Product[]>([]);
     
@@ -17,6 +17,6 @@ export const useGetProductListByStore = ():Product[] =>{
     },[])
     
 
-    return list;
+    return [list, loadList];
 
 }

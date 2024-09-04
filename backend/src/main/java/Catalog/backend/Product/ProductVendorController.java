@@ -24,9 +24,9 @@ public class ProductVendorController {
 
     @PutMapping("/update")
     public ResponseEntity<ConfirmationResponse> update(
-            @RequestBody SaveProductRequest requestBody
+            @RequestBody UpdateProductRequest requestBody
     ){
-        return ResponseEntity.ok(ConfirmationResponse.builder().msg("producto actualizado").build());
+        return ResponseEntity.ok(service.update(requestBody));
     }
 
     @GetMapping("/product-store-list")

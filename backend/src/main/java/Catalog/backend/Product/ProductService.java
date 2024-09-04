@@ -57,4 +57,17 @@ public class ProductService {
 
 
     }
+
+    public ConfirmationResponse update(UpdateProductRequest requestBody) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails) principal).getUsername();
+        Store store = storeRepository.findByUserEmail(email);
+
+        repository.setProductById(requestBody.name,requestBody.price,requestBody.description,requestBody.image,requestBody.id);
+
+
+        return ConfirmationResponse.builder().msg("success").build();
+
+    }
 }

@@ -1,16 +1,18 @@
 import { HEADERS,GETHEADERS, IMAGEHEADERS } from "./Config";
 
 export interface Product {
-    image: string
+    id?: number,
+    image: string,
     name: string,
     price: number,
     description: string
 }
 
 
-export const saveNewProduct = async (newProduct: Product, image:FormData) => {
+export const saveNewProduct = async (newProduct: Product, image:FormData|null):Promise<[Promise<any> | undefined, number]> => {
 
     try {
+        if (image == null) return [undefined,500];
         const imgPath:Response = await fetch('http://localhost:8080/image/save'
             ,{
                 method: "POST",
@@ -32,11 +34,12 @@ export const saveNewProduct = async (newProduct: Product, image:FormData) => {
                 body:JSON.stringify(newProduct)
             });
 
-        const content =  await response.json();
-        return content;
+        const content:Promise<any> =  await response.json();
+        return [content, response.status];
     }
     catch (err) {
         console.log(err, "error loading the product");
+        return [undefined, 500];
     }
 }
 
@@ -59,7 +62,7 @@ export const productStoreListAPI = async () => {
     }
 }
 
-export const editProductAPI = async (product: Product, image:FormData|null) => {
+export const editProductAPI = async (product: Product, image:FormData|null):Promise<[Promise<any> | undefined, number]> => {
 
     try {
         if(image != null) {
@@ -85,10 +88,11 @@ export const editProductAPI = async (product: Product, image:FormData|null) => {
                 body:JSON.stringify(product)
             });
 
-        const content =  await response.json();
-        return content;
+        const content:Promise<any> =  await response.json();
+        return [content, response.status];
     }
     catch (err) {
         console.log(err, "error loading the product");
+        return [undefined, 500];
     }
 }

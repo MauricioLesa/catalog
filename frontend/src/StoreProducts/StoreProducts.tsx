@@ -6,13 +6,14 @@ import { useGetProductListByStore } from "./UseGetProcutListByStore";
 
 const StoreProducts = () => {
 
-    const data = useGetProductListByStore();
-    const [image, setImage] = useState<FormData>(new FormData());
+    const [data,updateData] = useGetProductListByStore();
+    const [image, setImage] = useState<FormData|null>(null);
     const [product, setProduct] = useState<Product>(
-        {image: "",
-        name: "",
-        price: 0.0,
-        description: ""
+        {
+            image: "",
+            name: "",
+            price: 0.0,
+            description: ""
         }
     );
 
@@ -26,32 +27,39 @@ const StoreProducts = () => {
     }
 
     const newProduct = async () => {
-        let response = await saveNewProduct(
+        let [response,status] = await saveNewProduct(
             product,
             image
         )
-        if (response.status === 200)
-        setProduct({image: "",
-            name: "",
-            price: 0.0,
-            description: ""
+
+        if (status === 200){
+            setProduct({
+                image: "",
+                name: "",
+                price: 0.0,
+                description: ""
             })
+            updateData();
+        }
     }
 
     const editProduct = async (id:number) => {
         console.log(product);
         console.log(data[id]);
-        let response = await editProductAPI(
+        let [response,status]  = await editProductAPI(
             product,
-            null
+            image
         )
-
-        /*if (response.status === 200)
-            setProduct({image: "",
+        
+        if (status === 200){
+            setProduct({
+                image: "",
                 name: "",
                 price: 0.0,
                 description: ""
-                })*/
+            })
+            updateData();
+        }
     }
 
     return(

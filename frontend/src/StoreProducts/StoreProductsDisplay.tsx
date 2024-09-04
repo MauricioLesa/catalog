@@ -1,4 +1,3 @@
-import { SetStateAction, useState } from "react";
 import "./StoreProducts.css";
 import { Product } from "../APIs/ProductAPI";
 import ProductModal from "./ProductModal";

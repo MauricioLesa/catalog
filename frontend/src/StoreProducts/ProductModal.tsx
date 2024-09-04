@@ -26,9 +26,13 @@ const ProductModal = (props:ProductModalProps) => {
                 copyProduct.description=e.target.value;
                 break;
             case "price":
-                SetPrice(e.target.value.replace(",","."));
-                console.log(parseFloat(e.target.value));
-                copyProduct.price = parseFloat(e.target.value.replace(",","."));
+                let price = e.target.value.replace(".",".");
+                console.log(price.split(".")[1])
+                if (price.split(".")[1] === undefined || price.split(".")[1].length < 3){
+                    SetPrice(price);
+                    copyProduct.price = Number(price);
+                }
+
                 break;
         
         }
@@ -36,14 +40,14 @@ const ProductModal = (props:ProductModalProps) => {
     }
 
     useEffect(()=>{
-        modal?.addEventListener('hidden.bs.modal', function (event) {
-            console.log("close");
+        modal?.addEventListener('hidden.bs.modal', function () {
             props.setProduct({
                 image: "",
                 name: "",
                 price: 0.0,
                 description: ""
             })
+            SetPrice("0.0");
         })
     }, [modal])
     
@@ -68,7 +72,7 @@ const ProductModal = (props:ProductModalProps) => {
                                 </div>
                                 <span className="" >Precio</span >
                                 <div className='input-group mb-2'>
-                                    <input onChange={(e) => setValue(e, "price")} value={price} className='form-control' type="number" />
+                                    <input onChange={(e) => setValue(e, "price")} step={0.01} value={price} className='form-control' type="number" />
                                 </div>
                                 <span className="" >Imagen</span >
                                 <div className='input-group mb-2'>
