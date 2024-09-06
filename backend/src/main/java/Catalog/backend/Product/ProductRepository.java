@@ -1,11 +1,13 @@
 package Catalog.backend.Product;
 
 import Catalog.backend.Store.Store;
+import Catalog.backend.Tag.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +25,6 @@ interface ProductRepository  extends JpaRepository <Product, Integer> {
     @Query("update Product p " +
             "set p.name = ?1, p.price = ?2, p.description = ?3, p.img_path = ?4  " +
             "where p.id = ?5")
-    void setProductById(String name, float price, String description, String img_path,  Integer productId);
+    void setProductById(String name, Double price, String description, String img_path, Integer productId);
 
 }

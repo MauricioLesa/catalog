@@ -30,7 +30,7 @@ public class Product {
 
     private String img_path;
 
-    private Float price;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")

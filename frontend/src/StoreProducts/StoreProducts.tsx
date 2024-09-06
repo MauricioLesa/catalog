@@ -12,10 +12,13 @@ const StoreProducts = () => {
         {
             image: "",
             name: "",
-            price: 0.0,
-            description: ""
+            price: 0,
+            description: "",
+            tags:[]
         }
     );
+
+    console.log(data);
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files != null){
@@ -36,8 +39,9 @@ const StoreProducts = () => {
             setProduct({
                 image: "",
                 name: "",
-                price: 0.0,
-                description: ""
+                price: 0,
+                description: "",
+                tags:[]
             })
             updateData();
         }
@@ -56,7 +60,8 @@ const StoreProducts = () => {
                 image: "",
                 name: "",
                 price: 0.0,
-                description: ""
+                description: "",
+                tags:[]
             })
             updateData();
         }
