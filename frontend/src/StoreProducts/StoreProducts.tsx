@@ -4,21 +4,19 @@ import StoreProductsDisplay from "./StoreProductsDisplay";
 import { useGetProductListByStore } from "./UseGetProcutListByStore";
 
 
+export const emptyProduct = {
+    image: "",
+    name: "",
+    price: 0,
+    description: "",
+    tags:[]
+}
+
 const StoreProducts = () => {
 
     const [data,updateData] = useGetProductListByStore();
     const [image, setImage] = useState<FormData|null>(null);
-    const [product, setProduct] = useState<Product>(
-        {
-            image: "",
-            name: "",
-            price: 0,
-            description: "",
-            tags:[]
-        }
-    );
-
-    console.log(data);
+    const [product, setProduct] = useState<Product>(emptyProduct);
 
     const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files != null){
@@ -36,13 +34,7 @@ const StoreProducts = () => {
         )
 
         if (status === 200){
-            setProduct({
-                image: "",
-                name: "",
-                price: 0,
-                description: "",
-                tags:[]
-            })
+            setProduct(emptyProduct)
             updateData();
         }
     }
@@ -56,13 +48,7 @@ const StoreProducts = () => {
         )
         
         if (status === 200){
-            setProduct({
-                image: "",
-                name: "",
-                price: 0.0,
-                description: "",
-                tags:[]
-            })
+            setProduct(emptyProduct)
             updateData();
         }
     }

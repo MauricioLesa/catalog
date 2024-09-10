@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Product } from "../APIs/ProductAPI";
+import { emptyProduct } from "./StoreProducts";
 
 
 interface ProductModalProps{
@@ -13,7 +14,8 @@ interface ProductModalProps{
 
 const ProductModal = (props:ProductModalProps) => {
 
-    const [price, SetPrice] = useState<string>("0.0");
+    const [price, setPrice] = useState<string>("0.0");
+    const [tag, setTag] =  useState<string>("");
     let modal = document.getElementById(props.modalName);
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement> , field:String) => {
@@ -25,11 +27,14 @@ const ProductModal = (props:ProductModalProps) => {
             case "description":
                 copyProduct.description=e.target.value;
                 break;
+            case "tag":
+                setTag(e.target.value);
+                return;
             case "price":
                 let price = e.target.value.replace(".",".");
                 console.log(price.split(".")[1])
                 if (price.split(".")[1] === undefined || price.split(".")[1].length < 3){
-                    SetPrice(price);
+                    setPrice(price);
                     copyProduct.price = Number(price);
                 }
 
@@ -41,15 +46,16 @@ const ProductModal = (props:ProductModalProps) => {
 
     useEffect(()=>{
         modal?.addEventListener('hidden.bs.modal', function () {
-            props.setProduct({
-                image: "",
-                name: "",
-                price: 0.0,
-                description: ""
-            })
-            SetPrice("0.0");
+            props.setProduct(emptyProduct)
+            setPrice("0.0");
         })
     }, [modal])
+
+    const updateTags = () => {
+        let copyProduct = Object.assign({}, props.product);
+        copyProduct.tags.push(tag);
+        props.setProduct(copyProduct);
+    }
     
     
     return (
@@ -61,7 +67,7 @@ const ProductModal = (props:ProductModalProps) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                            <form className="edit-product-form text-start">  
+                            <div className="edit-product-form text-start">  
                                 <span  className="" >Nombre</span >
                                 <div className='input-group mb-2'>
                                     <input onChange={(e) => setValue(e, "name")} value={props.product.name} className='form-control' type="text" />
@@ -78,7 +84,17 @@ const ProductModal = (props:ProductModalProps) => {
                                 <div className='input-group mb-2'>
                                     <input className='form-control' onChange={(e) => props.uploadImage(e)} type="file" accept="image/png, image/jpeg"/>
                                 </div>
-                            </form>
+                                <span className="" >Etiqueta</span >
+                                <div className='input-group mb-2'>
+                                    <input onChange={(e) => setValue(e, "tag")}  value={tag} className='form-control' type="text" />
+                                    <button onClick={updateTags}>+</button>
+                                </div>
+                            </div>
+                            <div>
+                                {props.product.tags.map((tag,id )=> 
+                                    <p key={id} className="tag">{tag}</p>
+                                )}
+                            </div>
                             </div>
                             <div className="modal-footer">
                             <button className="btn" type="button" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
