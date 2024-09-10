@@ -15,7 +15,7 @@ interface ProductModalProps{
 const ProductModal = (props:ProductModalProps) => {
 
     const [price, setPrice] = useState<string>("0.0");
-    const [tag, setTag] =  useState<string>("");
+    const [tag, setTag] =  useState<Tag>("");
     let modal = document.getElementById(props.modalName);
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement> , field:String) => {
@@ -86,14 +86,14 @@ const ProductModal = (props:ProductModalProps) => {
                                 </div>
                                 <span className="" >Etiqueta</span >
                                 <div className='input-group mb-2'>
-                                    <input onChange={(e) => setValue(e, "tag")}  value={tag} className='form-control' type="text" />
-                                    <button onClick={updateTags}>+</button>
+                                    <input onChange={(e) => setValue(e, "tag")}  value={tag} className='form-control' type="text" aria-describedby="button-addon2"/>
+                                    <button className="btn btn-outline-secondary" onClick={updateTags}>+</button>
                                 </div>
                             </div>
                             <div>
-                                {props.product.tags.map((tag,id )=> 
+                                {props.product.tags?props.product.tags.map((tag,id )=> 
                                     <p key={id} className="tag">{tag}</p>
-                                )}
+                                ):<></>}
                             </div>
                             </div>
                             <div className="modal-footer">

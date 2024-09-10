@@ -12,6 +12,6 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProcutListResponse {
-    Collection<ProductDtoInterface> products;
+    Collection<ProductResponse> products;
 
 }

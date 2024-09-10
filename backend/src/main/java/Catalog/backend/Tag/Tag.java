@@ -13,7 +13,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tas")
+@Entity(name = "tags")
 public class Tag {
     @Id
     @GeneratedValue
