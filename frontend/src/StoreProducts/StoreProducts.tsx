@@ -5,6 +5,7 @@ import { useGetProductListByStore } from "./UseGetProcutListByStore";
 
 
 export const emptyProduct = {
+    id:-1,
     image: "",
     name: "",
     price: 0,
@@ -40,12 +41,12 @@ const StoreProducts = () => {
     }
 
     const editProduct = async (id:number) => {
-        console.log(product);
-        console.log(data[id]);
         let [response,status]  = await editProductAPI(
             product,
             image
         )
+
+
         
         if (status === 200){
             setProduct(emptyProduct)

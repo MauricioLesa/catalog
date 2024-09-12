@@ -9,6 +9,7 @@ export const useGetProductListByStore = (): [Product[],() => Promise<void>]  =>{
     
     const loadList = async () => {
         const res = await productStoreListAPI();
+        console.log(res);
         if(res) setList(res);
     }
     

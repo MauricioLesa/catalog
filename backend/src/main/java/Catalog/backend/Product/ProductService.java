@@ -61,6 +61,7 @@ public class ProductService {
                     tagsName.add(tag.getName());
                 }
                 productsList.add(ProductResponse.builder()
+                        .id(product.getId())
                         .name(product.getName())
                         .description(product.getDescription())
                         .price(product.getPrice())
@@ -80,7 +81,7 @@ public class ProductService {
 
         ArrayList<Tag> tags =  tagService.findOrSaveTags(requestBody.getTags());
 
-        repository.setProductById(requestBody.name,requestBody.price,requestBody.description,requestBody.image,requestBody.id);
+        repository.setProductById(requestBody.name,requestBody.price,requestBody.description,requestBody.image,requestBody.id, tags);
 
 
         return ConfirmationResponse.builder().msg("success").build();

@@ -15,7 +15,7 @@ interface ProductModalProps{
 const ProductModal = (props:ProductModalProps) => {
 
     const [price, setPrice] = useState<string>("0.0");
-    const [tag, setTag] =  useState<Tag>("");
+    const [tag, setTag] =  useState<string>("");
     let modal = document.getElementById(props.modalName);
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement> , field:String) => {
@@ -46,8 +46,9 @@ const ProductModal = (props:ProductModalProps) => {
 
     useEffect(()=>{
         modal?.addEventListener('hidden.bs.modal', function () {
-            props.setProduct(emptyProduct)
+            props.setProduct(emptyProduct);
             setPrice("0.0");
+            setTag("");
         })
     }, [modal])
 
@@ -58,6 +59,17 @@ const ProductModal = (props:ProductModalProps) => {
     }
     
     
+    function deleteTag(id:number): void {
+        let copyProduct = Object.assign({}, props.product);
+        copyProduct.tags.splice(id, 1);
+        props.setProduct(copyProduct);
+    }
+
+    function save(): void {
+        props.newProduct()
+        $('#'+props.modalName).modal('hide');
+    }
+
     return (
         <div className="modal fade" id={props.modalName} tabIndex={-1} aria-labelledby={props.modalName+"Label"} aria-hidden="true">
                     <div className="modal-dialog">
@@ -90,15 +102,16 @@ const ProductModal = (props:ProductModalProps) => {
                                     <button className="btn btn-outline-secondary" onClick={updateTags}>+</button>
                                 </div>
                             </div>
-                            <div>
                                 {props.product.tags?props.product.tags.map((tag,id )=> 
-                                    <p key={id} className="tag">{tag}</p>
+                                    <div key={id} className="tag">
+                                        {tag}
+                                        <button className="btn btn-ligh" onClick={() => deleteTag(id)}>-</button>
+                                    </div>
                                 ):<></>}
-                            </div>
                             </div>
                             <div className="modal-footer">
                             <button className="btn" type="button" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
-                            <button type="button" onClick={props.newProduct} className="btn btn-dark">guardar cambios</button>
+                            <button type="button" onClick={save} className="btn btn-dark">guardar cambios</button>
                             </div>
                         </div>
                     </div>
