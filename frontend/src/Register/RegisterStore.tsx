@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterStoreDisplay from "./RegisterStoreDisplay";
 import { registerStoreAPI } from "../APIs/StoreAPI";

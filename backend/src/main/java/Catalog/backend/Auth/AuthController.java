@@ -4,12 +4,9 @@ package Catalog.backend.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.processing.SupportedOptions;
-import javax.naming.NameAlreadyBoundException;
 
 @RestController
 @RequestMapping("/auth")

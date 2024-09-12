@@ -1,4 +1,8 @@
 
+.input-group-text{
+    min-width: 140px;
+}
+
 @media screen and (max-width:990px){
     .register_form{
         width: 100%;

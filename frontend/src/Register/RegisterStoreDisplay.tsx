@@ -19,6 +19,10 @@ const RegisterStoreDisplay = (props:RegisterStoreProps) => {
         <form className="register_form">  
                 <h2>Registro de tienda</h2>
                 <div className='input-group my-4'>
+                    <span  className="input-group-text" >Nombre de tienda</span >
+                    <input className='form-control' type="text" onChange={(e) => props.setStoreName(e.target.value)}/>
+                </div>
+                <div className='input-group my-4'>
                     <span  className="input-group-text" >Email</span >
                     <input className='form-control' type="email" onChange={(e) => props.setEmail(e.target.value)}/>
                 </div>
@@ -29,10 +33,6 @@ const RegisterStoreDisplay = (props:RegisterStoreProps) => {
                 <div className='input-group my-4'>
                     <span  className="input-group-text" >Apellido</span >
                     <input className='form-control' type="text" onChange={(e) => props.setLastName(e.target.value)}/>
-                </div>
-                <div className='input-group my-4'>
-                    <span  className="input-group-text" >Nombre de tienda</span >
-                    <input className='form-control' type="text" onChange={(e) => props.setStoreName(e.target.value)}/>
                 </div>
                 <div className='input-group my-4'>
                     <span  className="input-group-text" >Descripcion</span >

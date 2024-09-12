@@ -1,10 +1,9 @@
 import Login from '../Login/Login';
-import ErrorScreen from '../Errors/ErrorScreen';
 import {Routes, Route} from "react-router-dom";
 import './MainRoutes.css'
-import Register from '../Register/Register';
 import RegisterStore from '../Register/RegisterStore';
 import StoreProducts from '../StoreProducts/StoreProducts';
+import RegisterCustomer from '../Register/RegisterCustomer';
 
 const MainRoutes = () =>{
     return (
@@ -16,7 +15,7 @@ const MainRoutes = () =>{
                 />
                 <Route 
                     path="/register" 
-                    element={<Register/>}  
+                    element={<RegisterCustomer/>}  
                 />
                 <Route 
                     path="/register-store" 
