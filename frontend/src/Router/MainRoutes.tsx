@@ -4,11 +4,16 @@ import './MainRoutes.css'
 import RegisterStore from '../Register/RegisterStore';
 import StoreProducts from '../StoreProducts/StoreProducts';
 import RegisterCustomer from '../Register/RegisterCustomer';
+import { Home } from '../Home/Home';
 
 const MainRoutes = () =>{
     return (
         <main className="d-flex flex-grow-1">
             <Routes>
+                <Route 
+                    path="/" 
+                    element={<Home/>}  
+                />
                 <Route 
                     path="/login" 
                     element={<Login/>}  

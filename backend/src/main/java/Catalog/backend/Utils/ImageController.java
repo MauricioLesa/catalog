@@ -25,4 +25,15 @@ public class ImageController {
 
         return ResponseEntity.ok(SaveImageResponse.builder().img_path(path).build());
     }
+
+    @GetMapping("/load/{imageName}")
+    public ResponseEntity<LoadImageResponse> loadImage(
+            @PathVariable(value="imageName") String name
+    ) throws IOException {
+
+        String uploadDirectory = "src/main/resources/static/images";
+        byte[] image =  service.getImage(uploadDirectory,name);
+
+        return ResponseEntity.ok(LoadImageResponse.builder().image(image).build());
+    }
 }

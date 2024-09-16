@@ -33,8 +33,10 @@ public class SecurityConfig {
         return htttp
                 .authorizeHttpRequests(auths -> auths
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/image/load/**").permitAll()
+                        .requestMatchers("/public/product/**").permitAll()
                         .requestMatchers("/product/**").authenticated()
-                        .requestMatchers("/image/**").authenticated()
+                        .requestMatchers("/image/save").authenticated()
                         )
                 .csrf(AbstractHttpConfigurer::disable)
                 .securityContext((context) -> context.securityContextRepository(securityContextRepository))

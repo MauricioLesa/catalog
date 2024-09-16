@@ -45,7 +45,7 @@ public class ProductService {
         return ConfirmationResponse.builder().msg("success").build();
     }
 
-    public ProcutListResponse productList() {
+    public ProductListResponse productStoreList() {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<ProductDtoInterface>  list;
@@ -72,7 +72,7 @@ public class ProductService {
             }
         }
 
-        return ProcutListResponse.builder().products(productsList).build();
+        return ProductListResponse.builder().products(productsList).build();
 
 
     }
@@ -88,4 +88,30 @@ public class ProductService {
 
     }
 
+    public ProductListResponse latestProductList() {
+
+        Collection<ProductResponse> productsList = new ArrayList<>();
+        Collection<ProductDtoInterface>  list;
+        list = repository.findFirst20ByOrderByIdDesc();
+        for(var product:list){
+            Collection<TagDtoInterface> tags = tagRepository.findByProductId(product.getId());
+            Collection<String> tagsName = new ArrayList<>();
+            for(var tag:tags)
+            {
+                tagsName.add(tag.getName());
+            }
+            productsList.add(ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .img_path(product.getImg_path())
+                    .tags(tagsName)
+                    .build()
+            );
+        }
+        return ProductListResponse.builder().products(productsList).build();
+
+
+    }
 }

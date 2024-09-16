@@ -11,7 +11,6 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcutListResponse {
+public class ProductListResponse {
     Collection<ProductResponse> products;
-
 }
