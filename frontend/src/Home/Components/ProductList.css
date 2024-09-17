@@ -1,0 +1,13 @@
+.product-search{
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.product-search:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+.product-search:focus{
+    outline: none;
+    background-color: rgb(235, 235, 235);
+}

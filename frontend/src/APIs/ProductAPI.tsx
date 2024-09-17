@@ -2,11 +2,11 @@ import { HEADERS,GETHEADERS, IMAGEHEADERS } from "./Config";
 
 export interface Product {
     id?: number,
-    image: string,
+    image?: string,
     name: string,
     price: number,
     description: string,
-    tags: string[]
+    tags?: string[]
 }
 
 

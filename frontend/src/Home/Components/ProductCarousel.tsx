@@ -1,6 +1,8 @@
+import "./ProductCarousel.css"
+
 export const ProductCarousel = () => {
     return (
-        <div className="w-100 h-25 bg-secondary">
+        <div className="w-100 product-carousel bg-secondary">
             <div id="ProductCarousel" className="carousel slide h-100 w-50 m-auto" data-ride="carousel">
                 <div className="carousel-inner">
                     <div className="h-100 carousel-item active">

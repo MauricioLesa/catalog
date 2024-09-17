@@ -1,0 +1,5 @@
+.home-display{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: fit-content;
+}
