@@ -11,3 +11,11 @@
     outline: none;
     background-color: rgb(235, 235, 235);
 }
+
+.product-card{
+    width: 400px;
+    margin-top: 20px;
+    border: 0.5px solid lightgray;
+    padding: 10px;
+    border-radius: 10px;
+}

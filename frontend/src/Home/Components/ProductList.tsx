@@ -3,19 +3,19 @@ import "./ProductList.css"
 
 const productsList = [
     {
-        name:"example product",
+        name:"tenis",
+        price:0.0,
+        description:"example long description dasdasd sa dsadasdas s",
+        image:""
+    },
+    {
+        name:"celular",
         price:0.0,
         description:"example long description",
         image:""
     },
     {
-        name:"example product",
-        price:0.0,
-        description:"example long description",
-        image:""
-    },
-    {
-        name:"example product",
+        name:"bebidas",
         price:0.0,
         description:"example long description",
         image:""
