@@ -14,10 +14,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageService {
 
-    public String saveImage(String uploadDirectory, MultipartFile imageFile) throws IOException {
+    private final String imageDirectory = "src/main/resources/static/images";
+
+    public String saveImage(MultipartFile imageFile) throws IOException {
         String uniqueFileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
 
-        Path uploadPath = Path.of(uploadDirectory);
+        Path uploadPath = Path.of(imageDirectory);
         Path filePath = uploadPath.resolve(uniqueFileName);
 
         if (!Files.exists(uploadPath)) {
@@ -29,14 +31,14 @@ public class ImageService {
         return uniqueFileName;
     }
 
-    public byte[] getImage(String imageDirectory, String imageName) throws IOException {
+    public byte[] getImage(String imageName) throws IOException {
         Path imagePath = Path.of(imageDirectory, imageName);
 
         if (Files.exists(imagePath)) {
             byte[] imageBytes = Files.readAllBytes(imagePath);
             return imageBytes;
         } else {
-            return null; // Handle missing images
+            return null;
         }
     }
 }

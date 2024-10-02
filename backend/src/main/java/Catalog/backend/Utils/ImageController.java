@@ -20,8 +20,7 @@ public class ImageController {
             @RequestParam("image") MultipartFile image
     ) throws IOException {
 
-        String uploadDirectory = "src/main/resources/static/images";
-        String path =  service.saveImage(uploadDirectory,image);
+        String path =  service.saveImage(image);
 
         return ResponseEntity.ok(SaveImageResponse.builder().img_path(path).build());
     }
@@ -31,8 +30,7 @@ public class ImageController {
             @PathVariable(value="imageName") String name
     ) throws IOException {
 
-        String uploadDirectory = "src/main/resources/static/images";
-        byte[] image =  service.getImage(uploadDirectory,name);
+        byte[] image =  service.getImage(name);
 
         return ResponseEntity.ok(LoadImageResponse.builder().image(image).build());
     }

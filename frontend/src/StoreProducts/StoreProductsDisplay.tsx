@@ -39,6 +39,7 @@ const StoreProductsDisplay =  (props:StoreProductsProps) => {
                                 <textarea  className="product-list-elemnt w-25" disabled  value={product.name}></textarea >
                                 <textarea  className="product-list-elemnt w-50" disabled  value={product.description}></textarea >
                                 <textarea  className="product-list-elemnt w-25" disabled  value={product.price}></textarea >
+
                                 <button className="btn btn-light" data-bs-toggle="modal" onClick={() => props.setProduct(product)} data-bs-target={"#ProductEditModal"+id}>
                                     <i className={"bi bi-pencil"}></i>
                                 </button>

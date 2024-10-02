@@ -14,7 +14,7 @@ import java.util.Collection;
 interface ProductRepository  extends JpaRepository <Product, Integer> {
 
     @Query(
-            "select p.id as id,p.name as name, p.price as price, p.description as description, p.img_path as img_pah " +
+            "select p.id as id,p.name as name, p.price as price, p.description as description, p.img_path as img_path " +
             "from products p " +
             "where p.store = ?1 "
     )

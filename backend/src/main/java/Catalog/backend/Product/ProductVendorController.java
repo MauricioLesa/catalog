@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class ProductVendorController {
 
     @GetMapping("/product-store-list")
     public ResponseEntity<ProductListResponse> productStoreList(
-    ){
+    ) throws IOException {
         return ResponseEntity.ok(service.productStoreList());
     }
 }

@@ -6,11 +6,13 @@ import Catalog.backend.Tag.Tag;
 import Catalog.backend.Tag.TagDtoInterface;
 import Catalog.backend.Tag.TagRepository;
 import Catalog.backend.Tag.TagService;
+import Catalog.backend.Utils.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,6 +24,7 @@ public class ProductService {
     private final ProductRepository repository;
     private final TagRepository tagRepository;
     private final TagService tagService;
+    private final ImageService imageService;
 
     public ConfirmationResponse saveNewProduct (SaveProductRequest requestBody){
 
@@ -45,7 +48,7 @@ public class ProductService {
         return ConfirmationResponse.builder().msg("success").build();
     }
 
-    public ProductListResponse productStoreList() {
+    public ProductListResponse productStoreList() throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<ProductDtoInterface>  list;
@@ -60,12 +63,15 @@ public class ProductService {
                 {
                     tagsName.add(tag.getName());
                 }
+
+                byte[] img = imageService.getImage(product.getImg_path());
+
                 productsList.add(ProductResponse.builder()
                         .id(product.getId())
                         .name(product.getName())
                         .description(product.getDescription())
                         .price(product.getPrice())
-                        .img_path(product.getImg_path())
+                        .img(img)
                         .tags(tagsName)
                         .build()
                 );
@@ -88,7 +94,7 @@ public class ProductService {
 
     }
 
-    public ProductListResponse latestProductList() {
+    public ProductListResponse latestProductList() throws IOException {
 
         Collection<ProductResponse> productsList = new ArrayList<>();
         Collection<ProductDtoInterface>  list;
@@ -100,12 +106,13 @@ public class ProductService {
             {
                 tagsName.add(tag.getName());
             }
+            byte[] img = imageService.getImage(product.getImg_path());
             productsList.add(ProductResponse.builder()
                     .id(product.getId())
                     .name(product.getName())
                     .description(product.getDescription())
                     .price(product.getPrice())
-                    .img_path(product.getImg_path())
+                    .img(img)
                     .tags(tagsName)
                     .build()
             );

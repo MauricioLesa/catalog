@@ -23,7 +23,7 @@ public class ProductResponse {
 
         private String description;
 
-        private String img_path;
+        private byte[] img;
 
         private Double price;
 
