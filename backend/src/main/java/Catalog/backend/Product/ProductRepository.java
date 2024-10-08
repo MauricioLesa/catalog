@@ -3,7 +3,6 @@ package Catalog.backend.Product;
 import Catalog.backend.Store.Store;
 import Catalog.backend.Tag.Tag;
 import jakarta.transaction.Transactional;
-import org.hibernate.query.spi.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +17,7 @@ interface ProductRepository  extends JpaRepository <Product, Integer> {
             "from products p " +
             "where p.store = ?1 "
     )
-    Collection<ProductDtoInterface> findByStore(Store store_id);
+    Collection<ProductDTO> findByStore(Store store_id);
 
     @Modifying
     @Transactional
@@ -27,6 +26,8 @@ interface ProductRepository  extends JpaRepository <Product, Integer> {
             "where p.id = ?5 ")
     void setProductById(String name, Double price, String description, String img_path, Integer productId, Collection<Tag> tag);
 
-    Collection<ProductDtoInterface> findFirst20ByOrderByIdDesc();
+    ArrayList<Product> findFirst20ByOrderByIdDesc();
+
+    ArrayList<Product> findFirst5ByOrderByIdDesc();
 
 }

@@ -17,7 +17,11 @@ public class ProductController {
 
     @GetMapping("product-list")
     public ResponseEntity<ProductListResponse> productList() throws IOException {
-
         return ResponseEntity.ok(service.latestProductList());
+    }
+
+    @GetMapping("top-product")
+    public ResponseEntity<ProductListResponse> topProductList() throws IOException {
+        return ResponseEntity.ok(service.topProductList());
     }
 }

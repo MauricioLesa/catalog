@@ -98,3 +98,40 @@ export const editProductAPI = async (product: Product, image:FormData|null):Prom
         return [undefined, 500];
     }
 }
+
+export const productListAPI = async () => {
+
+    try {
+        const response:Response = await fetch('http://localhost:8080/public/product/product-list'
+            ,{
+                method: "GET",
+                mode: 'cors',
+                headers: GETHEADERS,
+            });
+
+        const content =  await response.json();
+        return(content.products);
+    }
+    catch (err) {
+        console.log(err, "error loading the product");
+    }
+}
+
+
+export const topProductListAPI = async () => {
+
+    try {
+        const response:Response = await fetch('http://localhost:8080/public/product/top-product'
+            ,{
+                method: "GET",
+                mode: 'cors',
+                headers: GETHEADERS,
+            });
+
+        const content =  await response.json();
+        return(content.products);
+    }
+    catch (err) {
+        console.log(err, "error loading the product");
+    }
+}

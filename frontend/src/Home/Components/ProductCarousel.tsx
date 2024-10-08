@@ -1,19 +1,21 @@
+import { Product } from "../../APIs/ProductAPI"
+import CarouselCard from "./CarouselCard"
 import "./ProductCarousel.css"
 
-export const ProductCarousel = () => {
+type ProductCarouselProps = {
+    list:Product[],
+}
+
+export const ProductCarousel = (props:ProductCarouselProps) => {
     return (
         <div className="w-100 product-carousel bg-secondary">
             <div id="ProductCarousel" className="carousel slide h-100 w-50 m-auto" data-ride="carousel">
-                <div className="carousel-inner">
-                    <div className="h-100 carousel-item active">
-                        <div className="d-block w-100">1</div>
-                    </div>
-                    <div className="carousel-item h-100 ">
-                        <div className="d-block  w-100">2</div>
-                    </div>
-                    <div className="carousel-item h-100 ">
-                        <div className="d-block w-100">3</div>
-                    </div>
+                <div className="carousel-inner h-100">
+                    {props.list.map ((item, id) => (
+                        <div className={`h-100 carousel-item  ${id===0?"active":""}`}>
+                            <CarouselCard item={item}/>
+                        </div>
+                    ))}
                 </div>
                 <div className="carousel-indicators">
                     <button type="button" data-bs-target="#ProductCarousel" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>

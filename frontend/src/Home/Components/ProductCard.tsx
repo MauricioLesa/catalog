@@ -9,10 +9,10 @@ export const ProductCard = (props:ProductCard) => {
     return (
         <div className="product-card d-flex">
             <img className="me-3" width="100" height="90"></img>
-            <div>
+            <div className="w-100">
                 <div className="d-flex justify-content-between">
-                    <span className="float-left">{props.product.name}</span>
-                    <span className="float-right">{props.product.price}</span>
+                    <span >{props.product.name}</span>
+                    <span >{props.product.price} Bs</span>
                 </div>
                 <span>{props.product.description}</span>
             </div>
