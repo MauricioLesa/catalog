@@ -17,7 +17,7 @@ interface ProductRepository  extends JpaRepository <Product, Integer> {
             "from products p " +
             "where p.store = ?1 "
     )
-    Collection<ProductDTO> findByStore(Store store_id);
+    Collection<ProductQueryDto> findByStore(Store store_id);
 
     @Modifying
     @Transactional
@@ -26,8 +26,18 @@ interface ProductRepository  extends JpaRepository <Product, Integer> {
             "where p.id = ?5 ")
     void setProductById(String name, Double price, String description, String img_path, Integer productId, Collection<Tag> tag);
 
-    ArrayList<Product> findFirst20ByOrderByIdDesc();
+    Collection<Product> findFirst20ByOrderByIdDesc();
 
-    ArrayList<Product> findFirst5ByOrderByIdDesc();
+    Collection<Product> findFirst5ByOrderByIdDesc();
 
+    Collection<Product> findByTagName(String tag);
+
+}
+
+interface ProductQueryDto{
+    String getName();
+    String getDescription();
+    String getImg_path();
+    Double getPrice();
+    int getId();
 }

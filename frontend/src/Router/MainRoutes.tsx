@@ -5,6 +5,7 @@ import RegisterStore from '../Register/RegisterStore';
 import StoreProducts from '../StoreProducts/StoreProducts';
 import RegisterCustomer from '../Register/RegisterCustomer';
 import { Home } from '../Home/Home';
+import SearchPage from '../SearchPage/SearchPage';
 
 const MainRoutes = () =>{
     return (
@@ -29,6 +30,10 @@ const MainRoutes = () =>{
                 <Route 
                     path="/store-products" 
                     element={<StoreProducts/>}  
+                />
+                <Route 
+                    path="/search-page" 
+                    element={<SearchPage/>}  
                 />
             </Routes>
         </main>

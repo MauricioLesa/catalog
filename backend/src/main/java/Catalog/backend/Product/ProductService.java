@@ -51,7 +51,7 @@ public class ProductService {
     public ProductListResponse productStoreList() throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Collection<ProductDTO>  list;
+        Collection<ProductQueryDto>  list;
         Collection<ProductResponse> productsList = new ArrayList<>();
         if(principal instanceof UserDetails) {
             Store store = storeRepository.findByUserEmail(((UserDetails) principal).getUsername());
@@ -118,14 +118,30 @@ public class ProductService {
             );
         }
         return ProductListResponse.builder().products(productsList).build();
-
-
     }
 
     public ProductListResponse topProductList() throws IOException {
         Collection<Product>  list;
         Collection<ProductResponse> productsList = new ArrayList<>();
         list = repository.findFirst5ByOrderByIdDesc();
+        for(var product:list){
+            byte[] img = imageService.getImage(product.getImg_path());
+            productsList.add(ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .img(img)
+                    .build()
+            );
+        }
+        return ProductListResponse.builder().products(productsList).build();
+    }
+
+    public ProductListResponse searchProductByTag(String tag) throws IOException {
+        Collection<Product>  list;
+        Collection<ProductResponse> productsList = new ArrayList<>();
+        list = repository.findByTagName(tag);
         for(var product:list){
             byte[] img = imageService.getImage(product.getImg_path());
             productsList.add(ProductResponse.builder()
