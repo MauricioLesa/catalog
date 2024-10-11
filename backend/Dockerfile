@@ -1,13 +1,16 @@
-FROM openjdk:21-jdk-alpine
-LABEL authors="Mau"
+FROM openjdk:21-jdk
+
+LABEL authors="Mauricio"
 
 WORKDIR /app
 
-VOLUME .mvn/ .mvn
+COPY .mvn/ ./mvn
+
 COPY mvnw pom.xml ./
+
 RUN ./mvnw dependency:go-offline
 
-VOLUME src ./src
+COPY src ./src
 
 CMD ["./mvnw", "spring-boot:run"]
 
