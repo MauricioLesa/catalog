@@ -28,8 +28,10 @@ const StoreProducts = () => {
         }
     }
 
+    const clearImage = () => setImage(null);
+
     const newProduct = async () => {
-        let [response,status] = await saveNewProduct(
+        let [,status] = await saveNewProduct(
             product,
             image
         )
@@ -40,8 +42,8 @@ const StoreProducts = () => {
         }
     }
 
-    const editProduct = async (id:number) => {
-        let [response,status]  = await editProductAPI(
+    const editProduct = async () => {
+        let [,status]  = await editProductAPI(
             product,
             image
         )
@@ -55,7 +57,7 @@ const StoreProducts = () => {
     }
 
     return(
-      <StoreProductsDisplay product={product} editProduct={editProduct} setProduct={setProduct} uploadImage={uploadImage} newProduct={newProduct}   productList = {data}/>
+      <StoreProductsDisplay product={product} clearImage={clearImage} editProduct={editProduct} setProduct={setProduct} uploadImage={uploadImage} newProduct={newProduct}   productList = {data}/>
         
     )
 }

@@ -4,9 +4,9 @@ const SearchPage = () => {
 
 
     return(
-        <>
-        <ProductList/>
-        </>
+        <section className="w-100 home-display flex-column d-flex align-items-center">
+            <ProductList/>
+        </section>
     )
 }
 

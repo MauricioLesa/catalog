@@ -6,6 +6,7 @@ interface StoreProductsProps{
     product:Product,
     productList:Product[],
     newProduct:() => Promise<void>,
+    clearImage:() => void,
     editProduct:(id:number) => Promise<void>,
     uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void,
     setProduct: React.Dispatch<React.SetStateAction<Product>>
@@ -27,6 +28,7 @@ const StoreProductsDisplay =  (props:StoreProductsProps) => {
 
                 <ProductModal 
                     modalName = {"ProductAddModal"}
+                    clearImage={props.clearImage}
                     product={props.product}
                     newProduct={props.newProduct} 
                     uploadImage={props.uploadImage} 
@@ -44,6 +46,7 @@ const StoreProductsDisplay =  (props:StoreProductsProps) => {
                                     <i className={"bi bi-pencil"}></i>
                                 </button>
                                 <ProductModal
+                                    clearImage = {props.clearImage}
                                     modalName = {"ProductEditModal"+id}
                                     product={props.product}
                                     newProduct={() => props.editProduct(id)} 

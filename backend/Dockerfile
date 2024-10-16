@@ -1,17 +1,15 @@
 FROM openjdk:21-jdk
 
-LABEL authors="Mauricio"
-
 WORKDIR /app
 
-COPY .mvn/ ./mvn
+COPY .mvn /app/.mvn
 
-COPY mvnw pom.xml ./
+COPY mvnw pom.xml /app/
 
 RUN ./mvnw dependency:go-offline
 
-COPY src ./src
+COPY src /app/src
+
+EXPOSE 8080
 
 CMD ["./mvnw", "spring-boot:run"]
-
-ENTRYPOINT ["top", "-b"]

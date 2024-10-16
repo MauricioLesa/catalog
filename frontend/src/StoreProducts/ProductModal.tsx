@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Product } from "../APIs/ProductAPI";
 import { emptyProduct } from "./StoreProducts";
 
@@ -7,6 +7,7 @@ interface ProductModalProps{
     product:Product,
     modalName:string,
     newProduct:() => Promise<void>,
+    clearImage:() => void,
     uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void,
     setProduct: React.Dispatch<React.SetStateAction<Product>>
 }
@@ -16,6 +17,7 @@ const ProductModal = (props:ProductModalProps) => {
 
     const [price, setPrice] = useState<string>("0.0");
     const [tag, setTag] =  useState<string>("");
+    const imageRef = useRef<HTMLInputElement>(null);
     let modal = document.getElementById(props.modalName);
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement> , field:String) => {
@@ -44,30 +46,36 @@ const ProductModal = (props:ProductModalProps) => {
         props.setProduct(copyProduct)
     }
 
+    const clean = () => {
+        props.setProduct(emptyProduct);
+        setPrice("0.0");
+        setTag("");
+        if(imageRef.current != null) imageRef.current.value = "";
+    }
+
     useEffect(()=>{
         modal?.addEventListener('hidden.bs.modal', function () {
-            props.setProduct(emptyProduct);
-            setPrice("0.0");
-            setTag("");
+            clean();
         })
     }, [modal])
 
     const updateTags = () => {
         let copyProduct = Object.assign({}, props.product);
-        copyProduct.tags.push(tag);
+        copyProduct.tags?.push(tag);
         props.setProduct(copyProduct);
     }
     
     
     function deleteTag(id:number): void {
         let copyProduct = Object.assign({}, props.product);
-        copyProduct.tags.splice(id, 1);
+        copyProduct.tags?.splice(id, 1);
         props.setProduct(copyProduct);
     }
 
     function save(): void {
         props.newProduct()
         $('#'+props.modalName).modal('hide');
+        clean();
     }
 
     return (
@@ -94,7 +102,7 @@ const ProductModal = (props:ProductModalProps) => {
                                 </div>
                                 <span className="" >Imagen</span >
                                 <div className='input-group mb-2'>
-                                    <input className='form-control' onChange={(e) => props.uploadImage(e)} type="file" accept="image/png, image/jpeg"/>
+                                    <input ref={imageRef} className='form-control' onChange={(e) => props.uploadImage(e)} type="file" accept="image/png, image/jpeg"/>
                                 </div>
                                 <span className="" >Etiqueta</span >
                                 <div className='input-group mb-2'>

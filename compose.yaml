@@ -1,8 +1,8 @@
 services:
-  frontend:
+  frontend-app:
     build:
       context: ./frontend
-    container_name: frontend
+    container_name: frontend-app
     restart: always
     ports:
       - 5173:5173
@@ -12,9 +12,8 @@ services:
     networks:
      - network
 
-  postgres:
+  postgresdb:
     image: postgres:latest
-    restart: no
     ports:
       - 5432:5432
     volumes:
@@ -23,6 +22,8 @@ services:
       - POSTGRES_PASSWORD=catalog_4432
       - POSTGRES_USER=catalog_user
       - POSTGRES_DB=catalog
+    networks:
+     - network
 
   spring-boot-app:
     build:
@@ -30,9 +31,12 @@ services:
     volumes:
       - ./backend/src:/app/src
     ports:
-      - '8080:8080'
-    depends_on:
-      - postgres
+      - 8080:8080
+    container_name: catalog-backend
+    depends_on: 
+      - postgresdb
+    networks:
+     - network
 
 
 volumes:

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/catalog
-    username: mau
-    password: mau
+    url: jdbc:postgresql://postgresdb:5432/catalog
+    username: catalog_user
+    password: catalog_4432
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
