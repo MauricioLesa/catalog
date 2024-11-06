@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/public/product")
@@ -25,6 +23,11 @@ public class ProductController {
     @GetMapping("top-product")
     public ResponseEntity<ProductListResponse> topProductList() throws IOException {
         return ResponseEntity.ok(service.topProductList());
+    }
+
+    @GetMapping("one-product")
+    public ResponseEntity<ProductQueryDto> oneProduct() throws IOException {
+        return ResponseEntity.ok(service.firstProduct());
     }
 
     @GetMapping("product-by-tag")

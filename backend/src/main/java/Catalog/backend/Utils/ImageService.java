@@ -32,6 +32,7 @@ public class ImageService {
     }
 
     public byte[] getImage(String imageName) throws IOException {
+        System.out.println("#################### \br"+imageName);
         Path imagePath = Path.of(imageDirectory, imageName);
 
         if (Files.exists(imagePath)) {

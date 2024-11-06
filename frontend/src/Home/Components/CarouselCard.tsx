@@ -5,7 +5,6 @@ type CarouselCardProps = {
 }
 
 const CarouselCard = (props:CarouselCardProps) => {
-    console.log(props);
     return (
         <div className="d-flex align-items-center h-100">
             <img width="300px" height="300px" src={`data:image/jpeg;base64,${props.item.img}`}/>

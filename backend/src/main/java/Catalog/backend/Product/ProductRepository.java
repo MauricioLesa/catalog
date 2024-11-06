@@ -2,42 +2,40 @@ package Catalog.backend.Product;
 
 import Catalog.backend.Store.Store;
 import Catalog.backend.Tag.Tag;
+import Catalog.backend.Tag.TagDtoInterface;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 interface ProductRepository  extends JpaRepository <Product, Integer> {
 
-    @Query(
-            "select p.id as id,p.name as name, p.price as price, p.description as description, p.img_path as img_path " +
-            "from products p " +
-            "where p.store = ?1 "
-    )
     Collection<ProductQueryDto> findByStore(Store store_id);
 
     @Modifying
     @Transactional
     @Query("update products p " +
-            "set p.name = ?1, p.price = ?2, p.description = ?3, p.img_path = ?4, p.tag = ?6  " +
+            "set p.name = ?1, p.price = ?2, p.description = ?3, p.image = ?4, p.tag = ?6  " +
             "where p.id = ?5 ")
     void setProductById(String name, Double price, String description, String img_path, Integer productId, Collection<Tag> tag);
 
-    Collection<Product> findFirst20ByOrderByIdDesc();
+    Collection<ProductQueryDto> findFirst20ByOrderByIdDesc();
 
-    Collection<Product> findFirst5ByOrderByIdDesc();
+    Collection<ProductQueryDto> findFirst5ByOrderByIdDesc();
 
-    Collection<Product> findByTagName(String tag);
+    Collection<ProductQueryDto> findByTagName(String tag);
+
+    ProductQueryDto findFirst1ByOrderByIdDesc();
 
 }
 
 interface ProductQueryDto{
     String getName();
     String getDescription();
-    String getImg_path();
+    String getImage();
     Double getPrice();
+    Collection<TagDtoInterface> getTag();
     int getId();
 }

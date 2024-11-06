@@ -1,18 +1,15 @@
-import { Product } from "../../APIs/ProductAPI"
 import CarouselCard from "./CarouselCard"
 import "./ProductCarousel.css"
+import { useGetTopProducts } from "./useGetTopProducts"
 
-type ProductCarouselProps = {
-    list:Product[],
-}
-
-export const ProductCarousel = (props:ProductCarouselProps) => {
+export const ProductCarousel = () => {
+    const [productList, ] = useGetTopProducts();
     return (
         <div className="w-100 product-carousel bg-secondary">
             <div id="ProductCarousel" className="carousel slide h-100 w-50 m-auto" data-ride="carousel">
                 <div className="carousel-inner h-100">
-                    {props.list.map ((item, id) => (
-                        <div className={`h-100 carousel-item  ${id===0?"active":""}`}>
+                    {productList.map ((item, id) => (
+                        <div key={id} className={`h-100 carousel-item  ${id===0?"active":""}`}>
                             <CarouselCard item={item}/>
                         </div>
                     ))}

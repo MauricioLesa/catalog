@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,9 @@ public class TagService {
             tagList.add(tag);
         }
         return tagList;
+    }
+
+    public Collection<TagDtoInterface> getPopularTags() {
+        return repository.findFirst10ByOrderByNameDesc();
     }
 }

@@ -4,6 +4,7 @@
     height: 100px;
     width: 25%;
     min-width: fit-content;
+    line-height: 75px;
 }
 
 .tags-menu{

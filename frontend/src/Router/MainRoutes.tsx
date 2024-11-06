@@ -1,11 +1,11 @@
 import Login from '../Login/Login';
 import {Routes, Route} from "react-router-dom";
-import './MainRoutes.css'
 import RegisterStore from '../Register/RegisterStore';
 import StoreProducts from '../StoreProducts/StoreProducts';
 import RegisterCustomer from '../Register/RegisterCustomer';
 import { Home } from '../Home/Home';
 import SearchPage from '../SearchPage/SearchPage';
+import { ProductPage } from '../Product/ProductPage';
 
 const MainRoutes = () =>{
     return (
@@ -35,6 +35,10 @@ const MainRoutes = () =>{
                     path="/search-page" 
                     element={<SearchPage/>}  
                 />
+                <Route 
+                    path="/product-page/:productId" 
+                    element={<ProductPage/>}  
+                />  
             </Routes>
         </main>
     )

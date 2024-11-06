@@ -4,6 +4,18 @@
   font-size: var(--font_medium);
 }
 
+.text-style-one{
+  text-decoration: none;
+  color: black;
+}
+
+.grow { 
+  transition: all .2s ease-in-out; 
+}
+
+.grow:hover { 
+  transform: scale(1.05); 
+}
 
 #app{
   min-height: 100vh;

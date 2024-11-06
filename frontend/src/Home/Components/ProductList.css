@@ -22,5 +22,6 @@
 
 .search-tag-box{
     border: 1px solid black;
-    height: fit-content;
+    height: min-content;
+    padding: 0px;
 }

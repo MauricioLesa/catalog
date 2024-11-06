@@ -27,7 +27,7 @@ public class ProductResponse {
 
         private Double price;
 
-        private Collection<String> tags;
+        private Collection<TagDtoInterface> tags;
 
 
 }

@@ -10,4 +10,6 @@ public interface TagRepository extends JpaRepository <Tag,Integer> {
     Optional<Tag> findByName(String name);
 
     Collection<TagDtoInterface> findByProductId(Integer id);
+
+    Collection<TagDtoInterface> findFirst10ByOrderByNameDesc();
 }

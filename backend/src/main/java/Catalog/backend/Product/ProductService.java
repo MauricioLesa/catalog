@@ -22,7 +22,6 @@ public class ProductService {
 
     private final StoreRepository storeRepository;
     private final ProductRepository repository;
-    private final TagRepository tagRepository;
     private final TagService tagService;
     private final ImageService imageService;
 
@@ -36,7 +35,7 @@ public class ProductService {
         Product product = Product.builder()
                 .name(requestBody.name)
                 .price(requestBody.price)
-                .img_path(requestBody.image)
+                .image(requestBody.image)
                 .store(store)
                 .description(requestBody.description)
                 .tag(tags)
@@ -51,31 +50,27 @@ public class ProductService {
     public ProductListResponse productStoreList() throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Collection<ProductQueryDto>  list;
         Collection<ProductResponse> productsList = new ArrayList<>();
+
         if(principal instanceof UserDetails) {
+
             Store store = storeRepository.findByUserEmail(((UserDetails) principal).getUsername());
-            list = repository.findByStore(store);
+
+            Collection<ProductQueryDto>  list  = repository.findByStore(store);
+
             for(var product:list){
-                Collection<TagDtoInterface> tags = tagRepository.findByProductId(product.getId());
-                Collection<String> tagsName = new ArrayList<>();
-                for(var tag:tags)
-                {
-                    tagsName.add(tag.getName());
-                }
-
-                byte[] img = imageService.getImage(product.getImg_path());
-
+                byte[] img = imageService.getImage(product.getImage());
                 productsList.add(ProductResponse.builder()
                         .id(product.getId())
                         .name(product.getName())
                         .description(product.getDescription())
                         .price(product.getPrice())
                         .img(img)
-                        .tags(tagsName)
+                        .tags(product.getTag())
                         .build()
                 );
             }
+
         }
 
         return ProductListResponse.builder().products(productsList).build();
@@ -97,23 +92,17 @@ public class ProductService {
     public ProductListResponse latestProductList() throws IOException {
 
         Collection<ProductResponse> productsList = new ArrayList<>();
-        Collection<Product>  list;
+        Collection<ProductQueryDto>  list;
         list = repository.findFirst20ByOrderByIdDesc();
         for(var product:list){
-            Collection<TagDtoInterface> tags = tagRepository.findByProductId(product.getId());
-            Collection<String> tagsName = new ArrayList<>();
-            for(var tag:tags)
-            {
-                tagsName.add(tag.getName());
-            }
-            byte[] img = imageService.getImage(product.getImg_path());
+            byte[] img = imageService.getImage(product.getImage());
             productsList.add(ProductResponse.builder()
                     .id(product.getId())
                     .name(product.getName())
                     .description(product.getDescription())
                     .price(product.getPrice())
                     .img(img)
-                    .tags(tagsName)
+                    .tags(product.getTag())
                     .build()
             );
         }
@@ -121,11 +110,10 @@ public class ProductService {
     }
 
     public ProductListResponse topProductList() throws IOException {
-        Collection<Product>  list;
         Collection<ProductResponse> productsList = new ArrayList<>();
-        list = repository.findFirst5ByOrderByIdDesc();
+        Collection<ProductQueryDto>  list = repository.findFirst5ByOrderByIdDesc();
         for(var product:list){
-            byte[] img = imageService.getImage(product.getImg_path());
+            byte[] img = imageService.getImage(product.getImage());
             productsList.add(ProductResponse.builder()
                     .id(product.getId())
                     .name(product.getName())
@@ -139,11 +127,10 @@ public class ProductService {
     }
 
     public ProductListResponse searchProductByTag(String tag) throws IOException {
-        Collection<Product>  list;
         Collection<ProductResponse> productsList = new ArrayList<>();
-        list = repository.findByTagName(tag);
+        Collection<ProductQueryDto> list = repository.findByTagName(tag);
         for(var product:list){
-            byte[] img = imageService.getImage(product.getImg_path());
+            byte[] img = imageService.getImage(product.getImage());
             productsList.add(ProductResponse.builder()
                     .id(product.getId())
                     .name(product.getName())
@@ -154,5 +141,9 @@ public class ProductService {
             );
         }
         return ProductListResponse.builder().products(productsList).build();
+    }
+
+    public ProductQueryDto firstProduct() {
+        return repository.findFirst1ByOrderByIdDesc();
     }
 }
